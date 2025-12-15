@@ -1,0 +1,68 @@
+{
+  "name": "HealthScan - Analizador de Ingredientes",
+  "short_name": "HealthScan",
+  "description": "Aplicación móvil para analizar ingredientes de productos y determinar su impacto en la salud humana y animal",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f5f5f5",
+  "theme_color": "#4CAF50",
+  "orientation": "portrait",
+  "scope": "/",
+  "lang": "es-ES",
+  "categories": ["health", "lifestyle", "utilities"],
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192' fill='%234CAF50'><circle cx='96' cy='96' r='88' fill='white'/><path d='M96 24l18.55 37.52L152 69.64l-30 29.23L129.1 136L96 118.64L62.9 136L70 98.87l-30-29.23L77.45 61.52L96 24z'/></svg>",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512' fill='%234CAF50'><circle cx='256' cy='256' r='240' fill='white'/><path d='M256 64l49.47 99.72L416 185.45l-80 77.95L354.94 384L256 333.45L157.06 384L176 263.4l-80-77.95L206.53 163.72L256 64z'/></svg>",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 568'><rect width='320' height='568' fill='%23f5f5f5'/><rect x='0' y='0' width='320' height='80' fill='%234CAF50'/><text x='160' y='50' text-anchor='middle' fill='white' font-size='18' font-family='Arial'>HealthScan</text><rect x='20' y='100' width='280' height='200' fill='white' rx='8'/><text x='160' y='130' text-anchor='middle' fill='%23333' font-size='16'>Escáner de Ingredientes</text></svg>",
+      "sizes": "320x568",
+      "type": "image/svg+xml",
+      "form_factor": "narrow",
+      "label": "Pantalla principal de escaneo"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Escanear Producto",
+      "short_name": "Escanear",
+      "description": "Escanea la etiqueta de un producto",
+      "url": "/?tab=scanner",
+      "icons": [
+        {
+          "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%234CAF50'><path d='M12 2c-4 0-8 .5-8 4v9.5C4 17.43 5.57 19 7.5 19L6 20.5v.5h12v-.5L16.5 19c1.93 0 3.5-1.57 3.5-3.5V6c0-3.5-4-4-8-4zm0 15c-2.75 0-5-2.25-5-5s2.25-5 5-5 5 2.25 5 5-2.25 5-5 5z'/></svg>",
+          "sizes": "96x96",
+          "type": "image/svg+xml"
+        }
+      ]
+    },
+    {
+      "name": "Base de Datos",
+      "short_name": "Ingredientes",
+      "description": "Consulta la base de datos de ingredientes",
+      "url": "/?tab=database",
+      "icons": [
+        {
+          "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%234CAF50'><path d='M12 3C7.58 3 4 4.79 4 7s3.58 4 8 4 8-1.79 8-4-3.58-4-8-4zM4 9v3c0 2.21 3.58 4 8 4s8-1.79 8-4V9c0 2.21-3.58 4-8 4s-8-1.79-8-4zM4 14v3c0 2.21 3.58 4 8 4s8-1.79 8-4v-3c0 2.21-3.58 4-8 4s-8-1.79-8-4z'/></svg>",
+          "sizes": "96x96",
+          "type": "image/svg+xml"
+        }
+      ]
+    }
+  ],
+  "prefer_related_applications": false,
+  "edge_side_panel": {
+    "preferred_width": 400
+  }
+}

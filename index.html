@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>HealthScan - Analizador de Ingredientes</title>
+    
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#4CAF50">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="HealthScan">
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="192x192" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%234CAF50'><path d='M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z'/></svg>">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    
+    <!-- Tesseract.js for OCR -->
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4/dist/tesseract.min.js"></script>
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-leaf"></i>
+                    <h1>HealthScan</h1>
+                </div>
+                <nav class="nav">
+                    <button class="nav-btn" data-tab="scanner" title="Escáner">
+                        <i class="fas fa-camera"></i>
+                    </button>
+                    <button class="nav-btn" data-tab="history" title="Historial">
+                        <i class="fas fa-history"></i>
+                    </button>
+                    <button class="nav-btn" data-tab="database" title="Base de Datos">
+                        <i class="fas fa-database"></i>
+                    </button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            
+            <!-- Scanner Tab -->
+            <div class="tab-content active" id="scanner-tab">
+                <div class="scanner-section">
+                    <h2><i class="fas fa-camera"></i> Escanear Etiqueta</h2>
+                    <p class="description">Toma una foto de la etiqueta del producto para analizar sus ingredientes</p>
+                    
+                    <!-- Camera Interface -->
+                    <div class="camera-container">
+                        <video id="camera" autoplay playsinline webkit-playsinline muted></video>
+                        <canvas id="canvas" style="display: none;"></canvas>
+                        <div class="camera-overlay">
+                            <div class="scan-frame">
+                                <div class="corner top-left"></div>
+                                <div class="corner top-right"></div>
+                                <div class="corner bottom-left"></div>
+                                <div class="corner bottom-right"></div>
+                            </div>
+                        </div>
+                        <div class="camera-controls">
+                            <button id="start-camera" class="btn btn-primary">
+                                <i class="fas fa-camera"></i> Iniciar Cámara
+                            </button>
+                            <button id="capture-photo" class="btn btn-success" style="display: none;">
+                                <i class="fas fa-camera-retro"></i> Capturar
+                            </button>
+                            <button id="stop-camera" class="btn btn-secondary" style="display: none;">
+                                <i class="fas fa-stop"></i> Detener
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- File Upload Alternative -->
+                    <div class="upload-section">
+                        <div class="upload-area" id="upload-area">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>O arrastra una imagen aquí</p>
+                            <input type="file" id="file-input" accept="image/*" capture="environment">
+                            <button class="btn btn-outline" onclick="document.getElementById('file-input').click()">
+                                Seleccionar Archivo
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Analysis Results -->
+                <div class="results-section" id="results-section" style="display: none;">
+                    <h3><i class="fas fa-chart-line"></i> Resultados del Análisis</h3>
+                    <div id="analysis-results"></div>
+                </div>
+            </div>
+
+            <!-- History Tab -->
+            <div class="tab-content" id="history-tab">
+                <div class="history-section">
+                    <h2><i class="fas fa-history"></i> Historial de Análisis</h2>
+                    <div class="search-bar">
+                        <input type="text" id="history-search" placeholder="Buscar productos...">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <div id="history-list" class="history-list">
+                        <!-- History items will be populated here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Database Tab -->
+            <div class="tab-content" id="database-tab">
+                <div class="database-section">
+                    <h2><i class="fas fa-database"></i> Base de Datos de Ingredientes</h2>
+                    <div class="search-bar">
+                        <input type="text" id="ingredient-search" placeholder="Buscar ingredientes...">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <div class="filter-section">
+                        <select id="risk-filter">
+                            <option value="">Todos los niveles de riesgo</option>
+                            <option value="muy_seguro">Muy Seguro</option>
+                            <option value="seguro">Seguro</option>
+                            <option value="moderado">Moderado</option>
+                            <option value="alto_riesgo">Alto Riesgo</option>
+                            <option value="peligroso">Peligroso</option>
+                        </select>
+                        <select id="category-filter">
+                            <option value="">Todas las categorías</option>
+                            <option value="aditivo">Aditivo</option>
+                            <option value="conservante">Conservante</option>
+                            <option value="edulcorante">Edulcorante</option>
+                            <option value="colorante">Colorante</option>
+                            <option value="natural">Natural</option>
+                        </select>
+                    </div>
+                    <div id="ingredients-list" class="ingredients-list">
+                        <!-- Ingredients will be populated here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Loading Modal -->
+    <div class="modal" id="loading-modal">
+        <div class="modal-content">
+            <div class="spinner"></div>
+            <p id="loading-text">Procesando imagen...</p>
+        </div>
+    </div>
+
+    <!-- Result Modal -->
+    <div class="modal" id="result-modal">
+        <div class="modal-content result-modal-content">
+            <button class="modal-close" id="close-result-modal">
+                <i class="fas fa-times"></i>
+            </button>
+            <div id="result-content"></div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/camera.js"></script>
+    <script src="js/ocr.js"></script>
+    <script src="js/analysis.js"></script>
+    <script src="js/database.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
